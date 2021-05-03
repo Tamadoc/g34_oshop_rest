@@ -37,12 +37,14 @@ public class CategoryServiceImpl implements CategoryService {
         // 1. check dto is not null
         if (dto == null) throw new ArgumentException("CategoryDto is null");
         // 2. id should be null or = 0
-        if (dto.getId() <= 0) throw new ArgumentException("CategoryDto Id is not valid");
+        if (dto.getId() != 0) throw new ArgumentException("CategoryDto Id is not valid");
         // 3. convert dto to entity
         Category category = modelMapper.map(dto, Category.class);
         // 4. check name exist on db or no
-        categoryRepository.findByNameIgnoreCase(dto.getName())
-                .orElseThrow(() -> new RecordDuplicateException("Category Name should not be duplicate"));
+        boolean isExist = categoryRepository.findByNameIgnoreCase(dto.getName()).isPresent();
+        if (isExist)
+            throw new RecordDuplicateException("Category Name should not be duplicate");
+
         // 5. save entity to database
         Category savedCategory = categoryRepository.save(category);
         // 6. convert entity result to dto
