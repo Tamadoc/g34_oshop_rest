@@ -58,7 +58,7 @@ public class CategoryServiceImpl implements CategoryService {
         if (dto == null) throw new ArgumentException("CategoryDto is null");
         if (dto.getId() != 0) throw new ArgumentException("CategoryDto Id is not valid");
         Category category = modelMapper.map(dto, Category.class);
-        categoryRepository.findById(category.getId()).orElseThrow(() -> new RecordNotFoundException("Category Id is not valid"));
+        categoryRepository.findById(category.getId()).orElseThrow(() -> new RecordNotFoundException("Category Id is not valid - data not fond"));
         Category updatedCategory = categoryRepository.save(category);
         CategoryDto convertToDto = modelMapper.map(updatedCategory, CategoryDto.class);
         return convertToDto;
@@ -73,19 +73,19 @@ public class CategoryServiceImpl implements CategoryService {
     }
 
     @Override
-    public CategoryDto findById(int id) {
+    public CategoryDto findById(int id) throws RecordNotFoundException {
         if (id <= 0) throw new ArgumentException("Id is not valid");
         Optional<Category> category = categoryRepository.findById(id);
-        if (category.isPresent())
-            return modelMapper.map(category, CategoryDto.class);
+        if (!category.isPresent())
+            throw new RecordNotFoundException("Category Id is not valid - data not fond");
+        return modelMapper.map(category, CategoryDto.class);
 
-        return null;
     }
 
     @Override
     public void deleteById(int id) throws RecordNotFoundException {
         if (id <= 0) throw new ArgumentException("Is is not valid");
-        categoryRepository.findById(id).orElseThrow(() -> new RecordNotFoundException("Category Id is not valid"));
+        categoryRepository.findById(id).orElseThrow(() -> new RecordNotFoundException("Category Id is not valid - data not fond"));
         categoryRepository.deleteById(id);
     }
 }

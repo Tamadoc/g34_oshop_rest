@@ -14,7 +14,7 @@ public interface CategoryService {
 
     List<CategoryDto> getAll();
 
-    CategoryDto findById(int id);
+    CategoryDto findById(int id) throws RecordNotFoundException;
 
     void deleteById(int id) throws RecordNotFoundException;
 }

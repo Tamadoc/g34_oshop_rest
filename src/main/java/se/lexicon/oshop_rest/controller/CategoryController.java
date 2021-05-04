@@ -29,7 +29,7 @@ public class CategoryController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<CategoryDto> findById(@PathVariable("id") Integer id) {
+    public ResponseEntity<CategoryDto> findById(@PathVariable("id") Integer id) throws RecordNotFoundException {
         return ResponseEntity.ok(categoryService.findById(id));
     }
 
