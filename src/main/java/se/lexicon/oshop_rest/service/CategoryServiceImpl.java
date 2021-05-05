@@ -78,7 +78,7 @@ public class CategoryServiceImpl implements CategoryService {
         Optional<Category> category = categoryRepository.findById(id);
         if (!category.isPresent())
             throw new RecordNotFoundException("Category Id is not valid - data not fond");
-        return modelMapper.map(category, CategoryDto.class);
+        return modelMapper.map(category.get(), CategoryDto.class); // do not forget to use get method
 
     }
 
