@@ -121,4 +121,8 @@ public class CategoryControllerTest {
     }
 
 
+    public void test_delete_by_id_check_size_0(){
+        // todo: implement mock test
+    }
+
 }
